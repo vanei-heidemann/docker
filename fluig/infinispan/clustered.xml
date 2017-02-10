@@ -42,7 +42,8 @@
                 <json-formatter name="json-formatter"/>
             </formatters>
             <handlers>
-                <file-handler name="file" formatter="json-formatter" relative-to="jboss.server.data.dir" path="audit-log.log"/>
+                <file-handler name="file" formatter="json-formatter" relative-to="jboss.server.data.dir"
+                              path="audit-log.log"/>
             </handlers>
             <logger log-boot="true" log-read-only="false" enabled="false">
                 <handlers>
@@ -105,11 +106,13 @@
             </formatter>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:deployment-scanner:2.0">
-            <deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000" runtime-failure-causes-rollback="${jboss.deployment.scanner.rollback.on.failure:false}"/>
+            <deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000"
+                                runtime-failure-causes-rollback="${jboss.deployment.scanner.rollback.on.failure:false}"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:datasources:4.0">
             <datasources>
-                <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true">
+                <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true"
+                            use-java-context="true">
                     <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
                     <driver>h2</driver>
                     <security>
@@ -127,11 +130,26 @@
         <subsystem xmlns="urn:infinispan:server:core:8.2" default-cache-container="clustered">
             <cache-container name="clustered" default-cache="http-session-cache" statistics="true">
                 <transport lock-timeout="60000"/>
-                <distributed-cache name="http-session-cache" mode="SYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
+                <distributed-cache name="http-session-cache" mode="SYNC" segments="20" owners="2" remote-timeout="30000"
+                                   start="EAGER">
                     <locking acquire-timeout="30000" concurrency-level="1000" striping="false"/>
                     <transaction mode="NONE"/>
                 </distributed-cache>
-                <distributed-cache name="memcachedCache" mode="SYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
+
+                <distributed-cache name="LOCAL_MAP" mode="SYNC" segments="20" owners="2" remote-timeout="30000"
+                                   start="EAGER">
+                    <locking acquire-timeout="30000" concurrency-level="1000" striping="false"/>
+                    <transaction mode="NONE"/>
+                </distributed-cache>
+
+                <!--
+                <local-cache name="LOCAL_MAP">
+                    <transaction mode="NONE"/>
+                </local-cache>
+                -->
+
+                <distributed-cache name="memcachedCache" mode="SYNC" segments="20" owners="2" remote-timeout="30000"
+                                   start="EAGER">
                     <locking acquire-timeout="30000" concurrency-level="1000" striping="false"/>
                     <transaction mode="NONE"/>
                 </distributed-cache>
@@ -142,7 +160,8 @@
                 <topology-state-transfer lazy-retrieval="false" lock-timeout="1000" replication-timeout="5000"/>
             </hotrod-connector>
             <memcached-connector socket-binding="memcached" cache-container="clustered"/>
-            <rest-connector socket-binding="rest" cache-container="clustered" security-domain="other" auth-method="BASIC"/>
+            <rest-connector socket-binding="rest" cache-container="clustered" security-domain="other"
+                            auth-method="BASIC"/>
             <websocket-connector socket-binding="websocket" cache-container="clustered"/>
         </subsystem>
         <subsystem xmlns="urn:infinispan:server:jgroups:8.0">
@@ -329,15 +348,18 @@
             <inet-address value="${jboss.bind.address:127.0.0.1}"/>
         </interface>
     </interfaces>
-    <socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
+    <socket-binding-group name="standard-sockets" default-interface="public"
+                          port-offset="${jboss.socket.binding.port-offset:0}">
         <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
         <socket-binding name="management-https" interface="management" port="${jboss.management.https.port:9993}"/>
         <socket-binding name="hotrod" port="11222"/>
         <socket-binding name="hotrod-internal" port="11223"/>
-        <socket-binding name="jgroups-mping" port="0" multicast-address="${jboss.default.multicast.address:234.99.54.14}" multicast-port="45700"/>
+        <socket-binding name="jgroups-mping" port="0"
+                        multicast-address="${jboss.default.multicast.address:234.99.54.14}" multicast-port="45700"/>
         <socket-binding name="jgroups-tcp" port="7600"/>
         <socket-binding name="jgroups-tcp-fd" port="57600"/>
-        <socket-binding name="jgroups-udp" port="55200" multicast-address="${jboss.default.multicast.address:234.99.54.14}" multicast-port="45688"/>
+        <socket-binding name="jgroups-udp" port="55200"
+                        multicast-address="${jboss.default.multicast.address:234.99.54.14}" multicast-port="45688"/>
         <socket-binding name="jgroups-udp-fd" port="54200"/>
         <socket-binding name="memcached" port="11211"/>
         <socket-binding name="rest" port="8080"/>
