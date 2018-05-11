@@ -1,4 +1,4 @@
-FROM mysql
+FROM mysql:5.7
 
 RUN echo "\nlower_case_table_names = 1" >> /etc/mysql/mysql.conf.d/mysqld.cnf \
   && echo "default_storage_engine  = InnoDB" >> /etc/mysql/mysql.conf.d/mysqld.cnf \
